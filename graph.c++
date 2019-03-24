@@ -1,15 +1,10 @@
-#include <bits/stdc++.h>
-
-using namespce std;
 
 class graph
 {
 	std::vector<int> vertices;
 	std::vector<pair<int,int>> edges;
 public:
-	graph();
-	~graph();
-	
+
 	void add(int a){
 		vector<int>::iterator it = find(vertices.begin(),vertices.end(),a);
 		if(it == vertices.end())
