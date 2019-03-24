@@ -16,7 +16,37 @@ public:
   	vector<int> getVertices();
  	Graph neighbourhood(int v);
  	bool edge_exists(int u,int v);
-}; 
+	map<int,int> degrees();
+	Graph& operator=(const Graph & p);
+};
+
+Graph& Graph::operator=(const Graph & p){
+	if(this != &p){
+		V.resize(p.V.size());
+		for(int i=0;i<V.size();i++) V[i]=p.V[i];
+
+		for(map<int,int>::iterator it=adj.begin(); it != adj.end() ;it++) it->second.clear();
+		adj.clear();
+		for(map<int,int>::iterator it=p.adj.begin(); it != p.adj.end() ;it++) {
+			adj[it->first] = *(new list<int>);
+			for (std::list<int>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
+			{
+				adj[it->first].push_back(*jt);
+			}
+		}
+
+	}
+	return *this;
+}
+
+map<int,int> degrees(){
+	std::map<int, int> d;
+	map<int,int>::iterator::it;
+	for(it = adj.begin(),it != adj.end(), it++){
+		d[it->first] = it->second.size() ;
+	}
+	return d;
+}
 
 bool Graph::edge_exists(int u,int v){
 	list<int>::iterator it = find(adj[u].begin(), adj[u].end(), v);
