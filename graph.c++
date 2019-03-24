@@ -1,4 +1,4 @@
-
+// also implement deep copy.(IMPORTANT)
 class Graph 
 { 
 	vector<int> V;
@@ -16,7 +16,17 @@ public:
   	vector<int> getVertices();
  	Graph neighbourhood(int v);
  	bool edge_exists(int u,int v);
-}; 
+	map<int,int> degrees();
+};
+
+map<int,int> degrees(){
+	std::map<int, int> d;
+	map<int,int>::iterator::it;
+	for(it = adj.begin(),it != adj.end(), it++){
+		d[it->first] = it->second.size() ;
+	}
+	return d;
+}
 
 bool Graph::edge_exists(int u,int v){
 	list<int>::iterator it = find(adj[u].begin(), adj[u].end(), v);

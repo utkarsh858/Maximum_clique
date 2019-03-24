@@ -1,10 +1,10 @@
-std::vector<int> comp_dict;
+map<int,int> comp_dict;
 
 bool decr(int a,int b){
 	return (comp_dict[a] > comp_dict[b]);
 }
 
-Graph heuristic_clique(Graph G, vector<int> K){
+Graph heuristic_clique(Graph G, map<int,int> K){
 	int max = 0;
 	Graph H;
 	
