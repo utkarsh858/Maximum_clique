@@ -2,10 +2,16 @@
 class Graph 
 { 
 public: 
+
 	vector<int> V;
 
     map<int,list<int> > adj;
-    // function to add an edge to graph 
+    
+    Graph(){}
+    Graph(int N){
+        V.resize(N);
+        for(int i=0;i<N;i++) V[i] = i+1;        
+    }
     void add(int u, int v); 
   	void add(int u);
   	void remove(int u);
@@ -22,7 +28,25 @@ public:
     void colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
     int color(map<int,int> & K);
     void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
+    void print();
 };
+
+void Graph::print(){
+    cout << "Vertices are:"<< endl;
+    for (int i = 0; i < V.size(); ++i)
+    {
+        cout << V[i]<<" ";
+    }
+    cout << endl;
+    for (std::map<int,int>::iterator it = adj.begin(); it != adj.end(); ++it)
+    {
+        cout << it->first<<" - >>> ";
+        for (std::list<int>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
+        {
+            cout <<" "<< *jt;
+        }
+    }
+}
 
 Graph& Graph::operator=(const Graph & p){
 	if(this != &p){
