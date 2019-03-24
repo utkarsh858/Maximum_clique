@@ -1,66 +1,64 @@
 
-class Graph
-{
-	std::vector<int> vertices;
-	std::vector<pair<int,int>> edges;
-public:
+class Graph 
+{ 
+	vector<int> V;
+  
+    // Pointer to an array containing adjacency lists 
+    // list<int> *adj;
+    map<int,list<int> > adj;
+public: 
 
-	void add(int a){
-		vector<int>::iterator it = find(vertices.begin(),vertices.end(),a);
-		if(it == vertices.end())
-			vertices.insert(a);
-	}
+    // function to add an edge to graph 
+    void add(int u, int v); 
+  	void add(int u);
+  	int size();
+  	vector<int> getVertices();
+ 	Graph neighbourhood(int v);
+}; 
 
-	void add(int a, int b){
-		bool found = false;
-		for(int i=0;i < edges.size() && !found; i++){
-			if(edges[i].first == a && edges[i].second == b) found = true;
-			if(edges[i].first == b && edges[i].second == a) found = true;
-		}
-		if(!found)
-			edges.insert(make_pair(a,b));
-	}
+void Graph::add(int u){
+	adj[u] = new list<int>;
+}
 
-	int size(){
-		return vertices.size();
-	}
+void Graph::add(int u, int v) 
+{ 	
+	if(adj[u].find(v) != adj[u].end())
+    adj[u].push_back(v); 
+	if(adj[v].find(u) != adj[v].end())
+    adj[v].push_back(u); 
+} 
 
-	void remove(int a){
-		vector<int>::iterator it = find(vertices.begin(),vertices.end(),a);
-		vertices.erase(it);
+int Graph::size(){
+	return V.size();
+}
+  	vector<int> Graph::getVertices(){
+  		return V;
+  	}
 
-		int i=0;
-		while(i < edges.size()){
-			bool found = false;
-			if(edges[i].first == a || edges[i].second == a) found = true;
 
-			if(found)
-				edges.erase(edges.begin()+i);
-			else
-				i++;
-		}
-
-	}
-
-	std::vector<int> getVertices(){
-		return vertices;
-	}
-
-	Graph neighbourhood(int v){
+	Graph Graph::neighbourhood(int u){
 		Graph R;
-		R.add(v);
-		for(int i=0;i<edges.size();i++){
-			if(edges[i].first == v) {
-				R.add(edges[i].second);
-				R.add(edges[i].first,edges[i].second);
-			}
-			if(edges[i].second == v){
-				R.add(edges[i].first);
-				R.add(edges[i].second,edges[i].first);
+		R.add(u);
 
-			}
+		for (auto const& v : adj[u]) {
+    		R.add(v);
+
+    		R.add(u,v);
+    		for(auto const& b : adj[v]){
+    			if(adj[u].find(b) != adj[u].end()) R.add(v,b);
+    		}
 		}
 
 		return R;
 	}
-};
+
+	void Graph::remove(int u){
+		vector<int>::iterator it = V.find(u);
+		V.erase(it);
+
+		adj.erase(u);
+
+		for(auto const& i : adj){
+			
+		}
+	}
