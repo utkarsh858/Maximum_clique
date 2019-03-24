@@ -1,7 +1,7 @@
 Graph H; // set global as shown in the paper
 
 Graph max_clique(Graph G){
-	vector<int> K = core_numbers(G);
+	vector<int> K = G.core_numbers();
 	 H = heuristic_clique(G,K);
 	// a little doubt in .... where to remove vertices from??
 	std::vector<int> V = G.getVertices();

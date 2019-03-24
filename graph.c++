@@ -176,8 +176,9 @@ list<int> Graph::kcores(int k)
     return remaining_vertex;
 }
 
-map<int, int> Graph::core_numbers(vector<int> v)
+map<int, int> Graph::core_numbers()
 {
+	v = this->V;
     map<int, int> core;
     auto it = v.begin();
     while(it != v.end())
