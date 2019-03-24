@@ -70,7 +70,7 @@ Graph& Graph::operator=(const Graph & p){
 map<int,int> Graph::degrees(){
 	std::map<int, int> d;
 	map<int,list<int>>::iterator it;
-	for(it = adj.begin().it != adj.end(), it++){
+	for(it = adj.begin(); it != adj.end(), it++){
 		d[it->first] = it->second.size() ;
 	}
 	return d;
