@@ -67,9 +67,9 @@ Graph& Graph::operator=(const Graph & p){
 	return *this;
 }
 
-map<int,int> degrees(){
+map<int,int> Graph::degrees(){
 	std::map<int, int> d;
-	map<int,int>::iterator it;
+	map<int,list<int>>::iterator it;
 	for(it = adj.begin().it != adj.end(), it++){
 		d[it->first] = it->second.size() ;
 	}
@@ -159,7 +159,7 @@ void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     {
         if (!visited[*i])
         {
-            DFSUtil(*i, visited);
+            colorUtil(ass_color,*i, visited);
         }
     }
 }
@@ -199,7 +199,7 @@ void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     {
         if (!visited[*i])
         {
-            DFSUtil(*i, visited);
+            colorKUtil(ass_color,*i, visited);
         }
     }
 }
@@ -290,7 +290,7 @@ list<int> Graph::kcores(int k, vector<int> cur_rem_ver)
     return remaining_vertex;
 }
 
-map<int, list<int>> Graph::core_numbers()
+map<int, int> Graph::core_numbers()
 {
 
     map<int, int> core;
