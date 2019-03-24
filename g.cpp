@@ -33,15 +33,16 @@ bool Graph::edge_exists(int u, int v)
 
 void Graph::add(int u)
 {
-    adj[u] = *(new list<int>);
+    //adj[u] = *(new list<int>);
+    V.push_back(u);
 }
 
 void Graph::add(int u, int v)
 {
     list<int>::iterator it;
-    //if ((it = find(adj[u].begin(), adj[u].end(), v)) != adj[u].end())
+    if ((it = find(adj[u].begin(), adj[u].end(), v)) == adj[u].end())
         adj[u].push_back(v);
-    //if ((it = find(adj[v].begin(), adj[v].end(), u)) != adj[v].end())
+    if ((it = find(adj[v].begin(), adj[v].end(), u)) == adj[v].end())
         adj[v].push_back(u);
 }
 
@@ -96,14 +97,13 @@ void Graph::remove(int u)
 bool Graph::DFSUtil(int v, vector<bool> &visited, vector<int> &vDegree, int k)
 {
     visited[v] = true;
-    map<int, list<int>>::iterator cur_it;
-    cur_it = find(adj.begin(), adj.end(), v);
+    //map<int, list<int>>::iterator cur_it;
+    //cur_it = find(adj.begin(), adj.end(), v);
 
     list<int>::iterator i;
     
-    for (i = cur_it->second.begin(); i != cur_it->second.end(); ++i)
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
     {
-        cout<<"Yes\n";
         if (vDegree[v] < k)
             vDegree[*i]--;
 
@@ -126,11 +126,11 @@ list<int> Graph::kcores(int k)
     int startvertex;
 
     vector<int> vDegree(V.size());
-    map<int, list<int>>::iterator it = adj.begin();
-    for (int i = it->first; i < V.size(); it++)
+    //map<int, list<int>>::iterator it = adj.begin();
+    for (int i = 0; i < V.size(); i++)
     {
         //vDegree[i] = adj[i].size();
-        vDegree[i] = it->second.size();
+        vDegree[i] = adj[i].size();
         if (vDegree[i] < mindeg)
         {
             mindeg = vDegree[i];
@@ -175,15 +175,23 @@ map<int, int> Graph::core_numbers(vector<int> v)
             }
             k++;
         }
-        it++;
+        ++it;
     }
+
+    /*list<int> rem = kcores(3);
+    list<int>::iterator i = rem.begin();
+    while(i!=rem.end())
+    {
+        cout<<*i<<" ";
+        ++i;
+    }*/
     return core;
 }
 
 int main()
 {
     Graph g1;
-    /*g1.add(0);
+    g1.add(0);
     g1.add(1);
     g1.add(2);
     g1.add(3);
@@ -191,7 +199,7 @@ int main()
     g1.add(5);
     g1.add(6);
     g1.add(7);
-    g1.add(8);*/
+    g1.add(8);
     g1.add(0, 1);
     g1.add(0, 2);
     g1.add(1, 2);
@@ -210,9 +218,14 @@ int main()
     g1.add(6, 7);
     g1.add(6, 8);
 
-    cout<<g1.edge_exists(1,5)<<endl;
-    cout << g1.edge_exists(1, 4);
+    //cout<<g1.edge_exists(1,5)<<endl;
+    //cout << g1.edge_exists(1, 4)<<endl;
 
+    /*for (auto i = g1.V.begin(); i != g1.V.end(); i++)
+    {
+        cout<<*i<<endl;
+    }*/
+    
     map<int, int> c = g1.core_numbers(g1.V);
     map<int, int>::iterator it = c.begin();
     while(it != c.end())
