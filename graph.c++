@@ -3,12 +3,8 @@ class Graph
 { 
 public: 
 	vector<int> V;
-  
-    // Pointer to an array containing adjacency lists 
-    // list<int> *adj;
+
     map<int,list<int> > adj;
-
-
     // function to add an edge to graph 
     void add(int u, int v); 
   	void add(int u);
@@ -19,9 +15,13 @@ public:
  	bool edge_exists(int u,int v);
 	map<int,int> degrees();
 	Graph& operator=(const Graph & p);
-	    bool DFSUtil(int, vector<bool> &, vector<int> &, int k);
-    list<int> kcores(int k);
-    map<int, int> core_numbers(vector<int>);
+    bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k)
+    list<int> kcores(int k, vector<int> cur_rem_ver)
+    map<int, int> core_numbers(vector<int> v)
+    int color();
+    void colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
+    int color(map<int,int> & K);
+    void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
 };
 
 Graph& Graph::operator=(const Graph & p){
@@ -114,29 +114,6 @@ int Graph::size(){
 	}
 
 
-bool Graph::DFSUtil(int v, vector<bool> &visited, vector<int> &vDegree, int k)
-{
-    visited[v] = true;
-    //map<int, list<int>>::iterator cur_it;
-    //cur_it = find(adj.begin(), adj.end(), v);
-
-    list<int>::iterator i;
-    
-    for (i = adj[v].begin(); i != adj[v].end(); ++i)
-    {
-        if (vDegree[v] < k)
-            vDegree[*i]--;
-
-        if (!visited[*i])
-        {
-            if (DFSUtil(*i, visited, vDegree, k))
-                vDegree[v]--;
-        }
-    }
-
-    return (vDegree[v] < k);
-}
-
 
 void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
 {
@@ -176,48 +153,121 @@ int Graph::color(){
 	return maxColor;
 }
 
-list<int> Graph::kcores(int k)
+void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
 {
-    vector<bool> visited(V.size(), false);
-    vector<bool> processed(V.size(), false);
+    visited[v] = true;
+    for(int n = 1; ;n++){
+    	bool found = false;
+    	for (list<int>::iterator it = adj[v].begin(); it != adj[v].end() && !found; ++it)
+    	{
+    		if(ass_color.find(*it) != ass_color.end()){
+    			if(ass_color[*it] == n) found = true;
+    		}
+    	}
+    	if(!found) ass_color[v] = n;
+    }
+
+    list<int> t(adj[v].begin(),adj[v].end());
+    list<int>::iterator i;
+
+    sort(t.begin(),t.end(),decr)
+    for (i = t.begin(); i != t.end(); ++i)
+    {
+        if (!visited[*i])
+        {
+            if (DFSUtil(*i, visited, k))
+        }
+    }
+}
+
+int Graph::color(map<int,int> & K){
+	map<int,int> m;
+	std::map<int,bool> visited;
+    comp_dict = K;
+	colorKUtil(m,V[0],visited);
+	int maxColor = INT_MIN;
+	for (map<int,int>::iterator it = m.begin(); it != m.end(); ++it)
+	{
+		if((it->second) > maxColor) maxColor = it->second;
+	}
+	return maxColor;
+}
+
+bool Graph::DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k)
+{
+    visited[v] = true;
+    //map<int, list<int>>::iterator cur_it;
+    //cur_it = find(adj.begin(), adj.end(), v);
+
+    list<int>::iterator i;
+    
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+    {
+        if (vDegree[v] < k)
+            vDegree[*i]--;
+
+        if (!visited[*i])
+        {
+            if (DFSUtil(*i, visited, vDegree, k))
+                vDegree[v]--;
+        }
+    }
+
+    return (vDegree[v] < k);
+}
+
+list<int> Graph::kcores(int k, vector<int> cur_rem_ver)
+{
+    //vector<bool> visited(cur_rem_ver.size(), false);
+    //vector<bool> processed(cur_rem_ver.size(), false);
+
+    map<int, bool> visited;
+    map<int, bool> processed;
+    map<int, int> vDegree;
+
+    for (auto i = cur_rem_ver.begin(); i != cur_rem_ver.end(); i++)
+    {
+        visited[*i] = false;
+        processed[*i] = false;
+    }
 
     int mindeg = INT_MAX;
     int startvertex;
 
-    vector<int> vDegree(V.size());
+    //vector<int> vDegree(cur_rem_ver.size());
     //map<int, list<int>>::iterator it = adj.begin();
-    for (int i = 0; i < V.size(); i++)
+    auto i = cur_rem_ver.begin();
+    while( i != cur_rem_ver.end())
     {
-        //vDegree[i] = adj[i].size();
-        vDegree[i] = adj[i].size();
-        if (vDegree[i] < mindeg)
+        vDegree[*i] = adj[*i].size();
+        if (vDegree[*i] < mindeg)
         {
-            mindeg = vDegree[i];
-            startvertex = i;
+            mindeg = vDegree[*i];
+            startvertex = *i;
         }
+        ++i;
     }
 
     DFSUtil(startvertex, visited, vDegree, k);
 
-    for (int i = 0; i < V.size(); i++)
-        if (visited[i] == false)
-            DFSUtil(i, visited, vDegree, k);
+    for (auto i = cur_rem_ver.begin(); i != cur_rem_ver.end(); i++)
+        if (visited[*i] == false)
+            DFSUtil(*i, visited, vDegree, k);
 
     list<int> remaining_vertex;
-    for (int v = 0; v < V.size(); v++)
+    for (auto v = cur_rem_ver.begin(); v != cur_rem_ver.end(); v++)
     {
-        if (vDegree[v] >= k)
+        if (vDegree[*v] >= k)
         {
-            remaining_vertex.push_back(v);
+            remaining_vertex.push_back(*v);
         }
     }
 
     return remaining_vertex;
 }
 
-map<int, int> Graph::core_numbers()
+map<int, int> Graph::core_numbers(vector<int> v)
 {
-	v = this->V;
     map<int, int> core;
     auto it = v.begin();
     while(it != v.end())
@@ -227,7 +277,7 @@ map<int, int> Graph::core_numbers()
         while(flag)
         {
             list<int> rem;
-            rem = kcores(k);
+            rem = kcores(k, v);
             if (find(rem.begin(), rem.end(), *it) == rem.end())
             {
                 core[*it] = k-1;
@@ -237,6 +287,7 @@ map<int, int> Graph::core_numbers()
         }
         ++it;
     }
+
 
     return core;
 }

@@ -2,9 +2,11 @@
 
 using namespace std;
 
-#include "graph.c++"
 #include "clique_comp.c++"
+#include "graph.c++"
+#include "intersection.c++"
 #include "heuristic_clique.c++"
+#include "branch.c++"
 #include "max_clique.c++"
 
 
