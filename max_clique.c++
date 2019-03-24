@@ -1,8 +1,6 @@
-
-
 Graph max_clique(Graph G){
 	K = G.core_numbers();
-	 H = heuristic_clique(G,K);
+	H = heuristic_clique(G,K);
 	// a little doubt in .... where to remove vertices from??
 	std::vector<int> V = G.getVertices();
 	for(auto v : V){
