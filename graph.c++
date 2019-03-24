@@ -70,7 +70,7 @@ Graph& Graph::operator=(const Graph & p){
 map<int,int> degrees(){
 	std::map<int, int> d;
 	map<int,int>::iterator it;
-	for(it = adj.begin().it != adj.end(), it++){
+	for(it = adj.begin(); it != adj.end(), it++){
 		d[it->first] = it->second.size() ;
 	}
 	return d;
@@ -138,7 +138,6 @@ int Graph::size(){
 	}
 
 
-
 void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
 {
     visited[v] = true;
@@ -159,7 +158,7 @@ void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     {
         if (!visited[*i])
         {
-            DFSUtil(*i, visited);
+            DFSUtil1(*i, visited);
         }
     }
 }
