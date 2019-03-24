@@ -21,13 +21,13 @@ public:
  	bool edge_exists(int u,int v);
 	map<int,int> degrees();
 	Graph& operator=(const Graph & p);
-    bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k)
-    list<int> kcores(int k, vector<int> cur_rem_ver)
-    map<int, int> core_numbers(vector<int> v)
+    bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k);
+    list<int> kcores(int k, vector<int> cur_rem_ver);
+    map<int, int> core_numbers(vector<int> v);
     int color();
     void colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
     int color(map<int,int> & K);
-    void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
+    void colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
     void print();
 };
 
@@ -38,7 +38,7 @@ void Graph::print(){
         cout << V[i]<<" ";
     }
     cout << endl;
-    for (std::map<int,int>::iterator it = adj.begin(); it != adj.end(); ++it)
+    for (std::map<int,list<int>>::iterator it = adj.begin(); it != adj.end(); ++it)
     {
         cout << it->first<<" - >>> ";
         for (std::list<int>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
@@ -290,18 +290,19 @@ list<int> Graph::kcores(int k, vector<int> cur_rem_ver)
     return remaining_vertex;
 }
 
-map<int, int> Graph::core_numbers(vector<int> v)
+map<int, int> Graph::core_numbers()
 {
+
     map<int, int> core;
-    auto it = v.begin();
-    while(it != v.end())
+    auto it = V.begin();
+    while(it != V.end())
     {
         int k = 2;
         bool flag = true;
         while(flag)
         {
             list<int> rem;
-            rem = kcores(k, v);
+            rem = kcores(k, V);
             if (find(rem.begin(), rem.end(), *it) == rem.end())
             {
                 core[*it] = k-1;

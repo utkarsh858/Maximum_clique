@@ -2,6 +2,7 @@
 
 using namespace std;
 
+#include "globals.c++"
 #include "clique_comp.c++"
 #include "graph.c++"
 #include "intersection.c++"

@@ -1,7 +1,7 @@
-Graph H; // set global as shown in the paper
+
 
 Graph max_clique(Graph G){
-	vector<int> K = G.core_numbers();
+	K = G.core_numbers();
 	 H = heuristic_clique(G,K);
 	// a little doubt in .... where to remove vertices from??
 	std::vector<int> V = G.getVertices();
@@ -11,8 +11,8 @@ Graph max_clique(Graph G){
 	// reduced vertices
 	V = G.getVertices();
 	comp_dict = G.degrees();
-	sort(V.begin(),V.end(),incr)
-	for(int i=0; i < V.size() && G.size > 0; i++){
+	sort(V.begin(),V.end(),incr);
+	for(int i=0; i < V.size() && G.size() > 0; i++){
 		initial_branch(V[i]);
 		G.remove(V[i]);
 		// periodically what ???
