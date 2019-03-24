@@ -137,6 +137,45 @@ bool Graph::DFSUtil(int v, vector<bool> &visited, vector<int> &vDegree, int k)
     return (vDegree[v] < k);
 }
 
+
+void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
+{
+    visited[v] = true;
+    for(int n = 1; ;n++){
+    	bool found = false;
+    	for (list<int>::iterator it = adj[v].begin(); it != adj[v].end() && !found; ++it)
+    	{
+    		if(ass_color.find(*it) != ass_color.end()){
+    			if(ass_color[*it] == n) found = true;
+    		}
+    	}
+    	if(!found) ass_color[v] = n;
+    }
+
+    list<int>::iterator i;
+    
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+    {
+        if (!visited[*i])
+        {
+            if (DFSUtil(*i, visited, k))
+        }
+    }
+}
+
+int Graph::color(){
+	map<int,int> m;
+	std::map<int,bool> visited;
+
+	colorUtil(m,V[0],visited);
+	int maxColor = INT_MIN;
+	for (map<int,int>::iterator it = m.begin(); it != m.end(); ++it)
+	{
+		if((it->second) > maxColor) maxColor = it->second;
+	}
+	return maxColor;
+}
+
 list<int> Graph::kcores(int k)
 {
     vector<bool> visited(V.size(), false);
@@ -176,8 +215,9 @@ list<int> Graph::kcores(int k)
     return remaining_vertex;
 }
 
-map<int, int> Graph::core_numbers(vector<int> v)
+map<int, int> Graph::core_numbers()
 {
+	v = this->V;
     map<int, int> core;
     auto it = v.begin();
     while(it != v.end())
