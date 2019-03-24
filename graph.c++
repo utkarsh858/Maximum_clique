@@ -11,20 +11,28 @@ public:
     // function to add an edge to graph 
     void add(int u, int v); 
   	void add(int u);
+  	void remove(int u);
   	int size();
   	vector<int> getVertices();
  	Graph neighbourhood(int v);
+ 	bool edge_exists(int u,int v);
 }; 
 
+bool Graph::edge_exists(int u,int v){
+	list<int>::iterator it = find(adj[u].begin(), adj[u].end(), v);
+	return (it != adj[u].end());
+}
+
 void Graph::add(int u){
-	adj[u] = new list<int>;
+	adj[u] = *(new list<int>);
 }
 
 void Graph::add(int u, int v) 
 { 	
-	if(adj[u].find(v) != adj[u].end())
+	list<int>::iterator it;
+	if((it = find(adj[u].begin(),adj[u].end(),v )) != adj[u].end())
     adj[u].push_back(v); 
-	if(adj[v].find(u) != adj[v].end())
+	if((it = find(adj[v].begin(),adj[v].end(),u )) != adj[v].end())
     adj[v].push_back(u); 
 } 
 
@@ -45,7 +53,8 @@ int Graph::size(){
 
     		R.add(u,v);
     		for(auto const& b : adj[v]){
-    			if(adj[u].find(b) != adj[u].end()) R.add(v,b);
+    			list<int>::iterator it;
+    			if((it = find(adj[u].begin(),adj[u].end(),b )) != adj[u].end()) R.add(v,b);
     		}
 		}
 
@@ -53,12 +62,17 @@ int Graph::size(){
 	}
 
 	void Graph::remove(int u){
-		vector<int>::iterator it = V.find(u);
+		vector<int>::iterator it = find(V.begin(),V.end(),u);
 		V.erase(it);
 
 		adj.erase(u);
 
-		for(auto const& i : adj){
+		map<int,list<int>>::iterator jt;
+		for(jt = adj.begin(); jt != adj.end(); jt++){
+
+			list<int>::iterator kt = find(jt->second.begin(),jt->second.end(),u);
 			
+			
+			jt->second.erase(kt);
 		}
 	}
