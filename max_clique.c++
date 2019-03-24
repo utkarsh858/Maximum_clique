@@ -13,7 +13,7 @@ Graph max_clique(Graph G){
 	comp_dict = G.degrees();
 	sort(V.begin(),V.end(),incr);
 	for(int i=0; i < V.size() && G.size() > 0; i++){
-		initial_branch(V[i]);
+		initial_branch(V[i],G);
 		G.remove(V[i]);
 		// periodically what ???
 	}

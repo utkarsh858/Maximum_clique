@@ -17,7 +17,7 @@ Graph Intersection(Graph G, Graph V){
 		else j++;
 	}
 	Graph I;
-	T.V = common;
+	I.V = common;
 	for(int i=0;i<common.size();i++){
 	
 		for (list<int>::iterator it = G.adj[i].begin(); it != G.adj[i].end(); ++it)

@@ -1,25 +1,4 @@
 
-
-void initial_branch(int u, Graph &G){
-	Graph P = G.neighbourhood(u);
-	if(P.size() <= H.size()) return;
-	map<int,int> Kn = P.core_numbers();
-	int Kp = INT_MIN;
-	for (map<int,int>::iterator it = Kn.begin(); it != Kn.end(); ++it)
-	{
-		if(Kp < it->second) Kp = it->second;
-	}
-	if(Kp+1 < H.size()) return;
-	vector<int> p_vert = P.getVertices();
-	for(auto p : p_vert){
-		if(Kn[p] < H.size()) P.remove(p);
-	}
-	int L = P.color(Kn);  // what is this color??
-	if(L <= H.size()) return;
-	Graph C;
-	branch(P,C,G);
-}
-
 void branch(Graph P, Graph C, Graph& G){
 	while(P.size() && (P.size() + C.size() > H.size())){
 		vector<int> p_vert = P.getVertices();
@@ -61,4 +40,24 @@ void branch(Graph P, Graph C, Graph& G){
 		}
 		
 	}
+}
+
+void initial_branch(int u, Graph &G){
+	Graph P = G.neighbourhood(u);
+	if(P.size() <= H.size()) return;
+	map<int,int> Kn = P.core_numbers();
+	int Kp = INT_MIN;
+	for (map<int,int>::iterator it = Kn.begin(); it != Kn.end(); ++it)
+	{
+		if(Kp < it->second) Kp = it->second;
+	}
+	if(Kp+1 < H.size()) return;
+	vector<int> p_vert = P.getVertices();
+	for(auto p : p_vert){
+		if(Kn[p] < H.size()) P.remove(p);
+	}
+	int L = P.color(Kn);  // what is this color??
+	if(L <= H.size()) return;
+	Graph C;
+	branch(P,C,G);
 }

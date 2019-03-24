@@ -23,7 +23,7 @@ public:
 	Graph& operator=(const Graph & p);
     bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k);
     list<int> kcores(int k, vector<int> cur_rem_ver);
-    map<int, int> core_numbers(vector<int> v);
+    map<int, int> core_numbers();
     int color();
     void colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
     int color(map<int,int> & K);
@@ -53,11 +53,11 @@ Graph& Graph::operator=(const Graph & p){
 		V.resize(p.V.size());
 		for(int i=0;i<V.size();i++) V[i]=p.V[i];
 
-		for(map<int,int>::iterator it=adj.begin(); it != adj.end() ;it++) it->second.clear();
+		for(map<int,list<int>>::iterator it=adj.begin(); it != adj.end() ;it++) it->second.clear();
 		adj.clear();
-		for(map<int,int>::iterator it=p.adj.begin(); it != p.adj.end() ;it++) {
+		for(map<int,list<int>>::iterator it=p.adj.begin(); it != p.adj.end() ;it++) {
 			adj[it->first] = *(new list<int>);
-			for (std::list<int>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
+			for (std::list<int>::iterator jt = (it->second).begin(); jt != (it->second).end(); ++jt)
 			{
 				adj[it->first].push_back(*jt);
 			}
@@ -69,9 +69,9 @@ Graph& Graph::operator=(const Graph & p){
 
 map<int,int> degrees(){
 	std::map<int, int> d;
-	map<int,int>::iterator::it;
+	map<int,int>::iterator it;
 	for(it = adj.begin(),it != adj.end(), it++){
-		d[it->first] = it->second.size() ;
+		d[it->first] = (it->second).size() ;
 	}
 	return d;
 }
@@ -159,7 +159,7 @@ void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     {
         if (!visited[*i])
         {
-            if (DFSUtil(*i, visited, k))
+            DFSUtil(*i, visited);
         }
     }
 }
@@ -194,12 +194,12 @@ void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     list<int> t(adj[v].begin(),adj[v].end());
     list<int>::iterator i;
 
-    sort(t.begin(),t.end(),decr)
+    sort(t.begin(),t.end(),decr);
     for (i = t.begin(); i != t.end(); ++i)
     {
         if (!visited[*i])
         {
-            if (DFSUtil(*i, visited, k))
+            DFSUtil(*i, visited);
         }
     }
 }

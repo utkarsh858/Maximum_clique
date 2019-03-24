@@ -2,9 +2,9 @@
 
 using namespace std;
 
-#include "globals.c++"
 #include "clique_comp.c++"
 #include "graph.c++"
+#include "globals.c++"
 #include "intersection.c++"
 #include "heuristic_clique.c++"
 #include "branch.c++"
