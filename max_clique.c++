@@ -1,4 +1,5 @@
 Graph max_clique(Graph G){
+	cout << "Given Graph G is :: \n";
 	G.print();
 	// for (list<int>::iterator it = G.adj[0].begin(); it != G.adj[0].end(); ++it)
 	// {
@@ -7,6 +8,8 @@ Graph max_clique(Graph G){
 	K = G.core_numbers();
 	H = heuristic_clique(G,K);
 	// a little doubt in .... where to remove vertices from??
+	cout << "Heuristic Clique H is :: \n";
+	H.print();
 	std::vector<int> V = H.getVertices();
 	for(auto v : V){
 		if(K[v] < H.size()) H.remove(v);
@@ -20,6 +23,6 @@ Graph max_clique(Graph G){
 		G.remove(V[0]);
 		// periodically what ???
 	}
-
+	
 	return H;
 }

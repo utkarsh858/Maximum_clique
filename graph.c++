@@ -46,6 +46,7 @@ void Graph::print(){
             cout <<" "<< *jt;
         }
     }
+    cout << endl;
 }
 
 Graph& Graph::operator=(const Graph & p){

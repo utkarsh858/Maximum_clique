@@ -78,6 +78,8 @@ G.add(24,25);
 G.add(24,26);
 G.add(25,26);
 Graph C = max_clique(G);
+cout << "Result Clique C is :: \n";
+
 C.print();
 	return 0;
 }
