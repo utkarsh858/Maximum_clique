@@ -55,9 +55,9 @@ Graph& Graph::operator=(const Graph & p){
 
 		for(map<int,list<int>>::iterator it = adj.begin(); it != adj.end() ; it++) it->second.clear();
 		adj.clear();
-		for(map<int,list<int>>::iterator it=p.adj.begin(); it != p.adj.end() ;it++) {
+		for(map<int,list<int>>::const_iterator it=p.adj.begin(); it != p.adj.end() ;it++) {
 			adj[it->first] = *(new list<int>);
-			for (std::list<int>::iterator jt = (it->second).begin(); jt != (it->second).end(); ++jt)
+			for (std::list<int>::const_iterator jt = (it->second).begin(); jt != (it->second).end(); ++jt)
 			{
 				adj[it->first].push_back(*jt);
 			}
@@ -70,8 +70,8 @@ Graph& Graph::operator=(const Graph & p){
 map<int,int> Graph::degrees(){
 	std::map<int, int> d;
 	map<int,list<int>>::iterator it;
-	for(it = adj.begin(); it != adj.end(), it++){
-		d[it->first] = it->second.size() ;
+	for(it = adj.begin(); it != adj.end(); it++){
+		d[it->first] = (it->second).size() ;
 	}
 	return d;
 }
@@ -123,18 +123,20 @@ int Graph::size(){
 
 	void Graph::remove(int u){
 		vector<int>::iterator it = find(V.begin(),V.end(),u);
+        if(it != V.end()){
 		V.erase(it);
-
 		adj.erase(u);
 
 		map<int,list<int>>::iterator jt;
 		for(jt = adj.begin(); jt != adj.end(); jt++){
 
-			list<int>::iterator kt = find(jt->second.begin(),jt->second.end(),u);
+			list<int>::iterator kt = find((jt->second).begin(),(jt->second).end(),u);
 			
-			
-			jt->second.erase(kt);
+			if(kt != (jt->second).end())
+			(jt->second).erase(kt);
 		}
+
+        }
 	}
 
 
@@ -149,7 +151,8 @@ void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     			if(ass_color[*it] == n) found = true;
     		}
     	}
-    	if(!found) ass_color[v] = n;
+    	if(!found) {ass_color[v] = n;break;}
+        
     }
 
     list<int>::iterator i;
@@ -188,13 +191,15 @@ void Graph::colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     			if(ass_color[*it] == n) found = true;
     		}
     	}
-    	if(!found) ass_color[v] = n;
+    	if(!found) {ass_color[v] = n;break;}
+      
     }
 
     list<int> t(adj[v].begin(),adj[v].end());
     list<int>::iterator i;
 
-    sort(t.begin(),t.end(),decr);
+    // sort(t.begin(),t.end(),decr);
+    t.sort(decr);
     for (i = t.begin(); i != t.end(); ++i)
     {
         if (!visited[*i])

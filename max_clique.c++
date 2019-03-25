@@ -1,18 +1,23 @@
 Graph max_clique(Graph G){
+	G.print();
+	// for (list<int>::iterator it = G.adj[0].begin(); it != G.adj[0].end(); ++it)
+	// {
+	// 	cout << " " <<*it;
+	// }
 	K = G.core_numbers();
 	H = heuristic_clique(G,K);
 	// a little doubt in .... where to remove vertices from??
-	std::vector<int> V = G.getVertices();
+	std::vector<int> V = H.getVertices();
 	for(auto v : V){
-		if(K[v] < H.size()) G.remove(v);
+		if(K[v] < H.size()) H.remove(v);
 	}
 	// reduced vertices
-	V = G.getVertices();
 	comp_dict = G.degrees();
-	sort(V.begin(),V.end(),incr);
-	for(int i=0; i < V.size() && G.size() > 0; i++){
-		initial_branch(V[i],G);
-		G.remove(V[i]);
+	while(G.size() > 0){
+		V = G.getVertices();
+		sort(V.begin(),V.end(),incr);
+		initial_branch(V[0],G);
+		G.remove(V[0]);
 		// periodically what ???
 	}
 

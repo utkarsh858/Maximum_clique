@@ -1,4 +1,4 @@
-Graph Intersection(Graph G, Graph V){
+Graph intersection(Graph G, Graph V){
 	std::vector<int> g = G.getVertices();
 	std::vector<int> v = V.getVertices();
 	sort(g.begin(),g.end());

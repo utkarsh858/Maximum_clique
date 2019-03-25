@@ -189,13 +189,7 @@ map<int, int> Graph::core_numbers(vector<int> v)
         ++it;
     }
 
-    /*list<int> rem = kcores(3);
-    list<int>::iterator i = rem.begin();
-    while(i!=rem.end())
-    {
-        cout<<*i<<" ";
-        ++i;
-    }*/
+
     return core;
 }
 
