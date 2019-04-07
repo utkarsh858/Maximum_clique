@@ -10,9 +10,9 @@ Graph max_clique(Graph G){
 	// a little doubt in .... where to remove vertices from??
 	cout << "Heuristic Clique H is :: \n";
 	H.print();
-	std::vector<int> V = H.getVertices();
+	std::vector<int> V = G.getVertices();
 	for(auto v : V){
-		if(K[v] < H.size()) H.remove(v);
+		if(K[v] < G.size()) G.remove(v);
 	}
 	// reduced vertices
 	comp_dict = G.degrees();

@@ -3,7 +3,7 @@ void branch(Graph P, Graph C, Graph& G){
 	while(P.size()>0 && (P.size() + C.size() > H.size())){
 		vector<int> p_vert = P.getVertices();
 		int w = p_vert[0];
-		P.remove(w);
+		P.remove(w);	
 		int c_new = C.size() + 1;
 		Graph Nw = G.neighbourhood(w);
 		Graph P_new = intersection(Nw, P);
@@ -35,8 +35,11 @@ void branch(Graph P, Graph C, Graph& G){
 
 			H = C_new;
 			vector<int> g_vert = G.getVertices();
+			K = G.core_numbers();
 			for(auto g : g_vert){
-				if(K[g] < H.size()) { G.remove(g); break;}
+				if(K[g] < H.size()) { G.remove(g);
+					// removed break;
+				}
 			}
 		}
 		
@@ -50,12 +53,14 @@ void initial_branch(int u, Graph &G){
 	int Kp = INT_MIN;
 	for (map<int,int>::iterator it = Kn.begin(); it != Kn.end(); ++it)
 	{
-		if(Kp < it->second) Kp = it->second;
+		if(Kp < (it->second)) Kp = it->second;
 	}
 	if(Kp+1 < H.size()) return;
 	vector<int> p_vert = P.getVertices();
 	for(auto p : p_vert){
-		if(Kn[p] < H.size()) {P.remove(p);break;}
+		if(Kn[p] < H.size()) {P.remove(p);
+			// break;
+		}
 	}
 	int L = P.color(Kn);  // what is this color??
 	
