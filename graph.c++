@@ -45,6 +45,7 @@ void Graph::print(){
         {
             cout <<" "<< *jt;
         }
+        cout << endl;
     }
     cout << endl;
 }

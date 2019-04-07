@@ -6,6 +6,7 @@ Graph max_clique(Graph G){
 	// 	cout << " " <<*it;
 	// }
 	K = G.core_numbers();
+	
 	H = heuristic_clique(G,K);
 	// a little doubt in .... where to remove vertices from??
 	cout << "Heuristic Clique H is :: \n";
