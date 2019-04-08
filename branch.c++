@@ -5,7 +5,7 @@ void branch(Graph P, Graph C, Graph& G){
 		int w = p_vert[0];
 		P.remove(w);	
 		int c_new = C.size() + 1;
-		Graph Nw = G.neighbourhood(w);
+		Graph Nw = G.neighbourhood(w,K,H.size());
 		Graph P_new = intersection(Nw, P);
 		Graph C_new;
 		if(P_new.size() > 0){
@@ -47,22 +47,28 @@ void branch(Graph P, Graph C, Graph& G){
 }
 
 void initial_branch(int u, Graph &G){
-	Graph P = G.neighbourhood(u);
+	Graph P = G.neighbourhood(u,K,H.size());
 	if(P.size() <= H.size()) return;
-	map<int,int> Kn = P.core_numbers();
+
+	// map<int,int> Kn = P.core_numbers();
+	//  we have to use original core_numbers
+	std::vector<int> p_vert = P.getVertices();
 	int Kp = INT_MIN;
-	for (map<int,int>::iterator it = Kn.begin(); it != Kn.end(); ++it)
-	{
-		if(Kp < (it->second)) Kp = it->second;
+	// for (map<int,int>::iterator it = Kn.begin(); it != Kn.end(); ++it)
+	// {
+	// 	if(Kp < (it->second)) Kp = it->second;
+	// }
+	for(auto v : p_vert){
+		Kp = max(Kp, K[v]);
 	}
 	if(Kp+1 < H.size()) return;
-	vector<int> p_vert = P.getVertices();
+	// vector<int> p_vert = P.getVertices();
 	for(auto p : p_vert){
-		if(Kn[p] < H.size()) {P.remove(p);
+		if(K[p] < H.size()) {P.remove(p);
 			// break;
 		}
 	}
-	int L = P.color(Kn);  // what is this color??
+	int L = P.color(K);  // what is this color??
 	
 	if(L <= H.size()) return;
 	Graph C;

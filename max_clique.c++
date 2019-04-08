@@ -18,10 +18,10 @@ Graph max_clique(Graph G){
 	cout << "Graph G with basic pruning from core_numbers : \n";
 	G.print();
 	// reduced vertices
-	comp_dict = G.degrees();
 	
 	while(G.size() > 0){
 		V = G.getVertices();
+	comp_dict = G.degrees();
 		sort(V.begin(),V.end(),incr);
 		initial_branch(V[0],G);
 		G.remove(V[0]);

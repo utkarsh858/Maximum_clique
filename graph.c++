@@ -18,7 +18,7 @@ public:
   	void remove(int u);
   	int size();
   	vector<int> getVertices();
- 	Graph neighbourhood(int v);
+ 	Graph neighbourhood(int v, map<int,int>& K,int w);
  	bool edge_exists(int u,int v);
 	map<int,int> degrees();
 	Graph& operator=(const Graph & p);
@@ -113,18 +113,20 @@ int Graph::size(){
   	}
 
 
-	Graph Graph::neighbourhood(int u){
+	Graph Graph::neighbourhood(int u, map<int,int> &K,int w){
 		Graph R;
 		R.add(u);
 
 		for (auto const& v : adj[u]) {
-    		R.add(v);
+    		  if(K[v] >= w){
+                  R.add(v);
 
-    		R.add(u,v);
-    		for(auto const& b : adj[v]){
-    			list<int>::iterator it;
-    			if((it = find(adj[u].begin(),adj[u].end(),b )) != adj[u].end()) R.add(v,b);
-    		}
+                    R.add(u,v);
+                    for(auto const& b : adj[v]){
+    		      	list<int>::iterator it;
+    		      	if((it = find(adj[u].begin(),adj[u].end(),b )) != adj[u].end()) R.add(v,b);
+    		      }
+              }
 		}
 
 		return R;
