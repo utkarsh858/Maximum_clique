@@ -5,6 +5,7 @@
 #include <list>
 #include <vector>
 #include <climits>
+#include <fstream>
 
 using namespace std;
 
@@ -16,70 +17,37 @@ using namespace std;
 #include "branch.c++"
 #include "max_clique.c++"
 
-
 int main(int argc, char const *argv[])
 {
+	Graph G;
 
-Graph G(26);
-G.add(1,5);
-G.add(1,22);
-G.add(1,6);
-G.add(1,7);
-G.add(1,23);
-G.add(1,8);
-G.add(1,24);
-G.add(2,5);
-G.add(2,6);
-G.add(2,7);
-G.add(2,8);
-G.add(3,5);
-G.add(3,6);
-G.add(3,7);
-G.add(3,8);
-G.add(4,5);
-G.add(4,6);
-G.add(4,7);
-G.add(4,8);
-G.add(5,9);
-G.add(5,15);
-G.add(6,17);
-G.add(6,23);
-G.add(7,14);
-G.add(8,23);
-G.add(9,10);
-G.add(9,11);
-G.add(9,12);
-G.add(9,13);
-G.add(9,14);
-G.add(9,15);
-G.add(9,16);
-G.add(10,11);
-G.add(10,26);
-G.add(11,13);
-G.add(12,13);
-G.add(14,15);
-G.add(15,23);
-G.add(15,17);
-G.add(15,21);
-G.add(16,17);
-G.add(17,18);
-G.add(17,19);
-G.add(19,20);
-G.add(19,21);
-G.add(19,22);
-G.add(19,24);
-G.add(20,21);
-G.add(20,22);
-G.add(21,22);
-G.add(23,24);
-G.add(23,25);
-G.add(23,26);
-G.add(24,25);
-G.add(24,26);
-G.add(25,26);
-Graph C = max_clique(G);
-cout << "Result Clique C is :: \n";
+	fstream data_file;
+	if(argc < 2) {
+		cout << "Usage : ./a.out [FILENAME]"; exit(0);
+	}
+	data_file.open(argv[1]);
+	char x;
+	string temp;
+	int a; int b;
+	while(data_file >> x){
+		if(x=='c') {
+			getline(data_file, temp);
+		} else if(x=='p') {
+			data_file >> temp;
+			data_file >> a;
+			data_file >> b;
+			G.resize(a);
+		} else if(x=='e'){
+			data_file >> a;
+			data_file >> b;
+			G.add(a,b);
+		}
+	}
+	data_file.close();
 
-C.print();
+	Graph C = max_clique(G);
+	cout << "Result Clique C is :: \n";
+
+	C.print();
 	return 0;
 }

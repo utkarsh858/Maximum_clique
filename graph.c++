@@ -12,6 +12,7 @@ public:
         V.resize(N);
         for(int i=0;i<N;i++) V[i] = i+1;        
     }
+    void resize(int N);
     void add(int u, int v); 
   	void add(int u);
   	void remove(int u);
@@ -29,7 +30,13 @@ public:
     int color(map<int,int> & K);
     void colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
     void print();
+
 };
+
+void Graph::resize(int N){
+    V.resize(N);
+    for(int i=0;i<N;i++) V[i] = i+1;
+}
 
 void Graph::print(){
     cout << "Vertices are:"<< endl;
