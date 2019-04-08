@@ -13,10 +13,13 @@ Graph max_clique(Graph G){
 	H.print();
 	std::vector<int> V = G.getVertices();
 	for(auto v : V){
-		if(K[v] < G.size()) G.remove(v);
+		if(K[v] < H.size()) G.remove(v);
 	}
+	cout << "Graph G with basic pruning from core_numbers : \n";
+	G.print();
 	// reduced vertices
 	comp_dict = G.degrees();
+	
 	while(G.size() > 0){
 		V = G.getVertices();
 		sort(V.begin(),V.end(),incr);
