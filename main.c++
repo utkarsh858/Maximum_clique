@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 			data_file >> temp;
 			data_file >> a;
 			data_file >> b;
-			G.resize(a);
+			G.resize(a+1);
 		} else if(x=='e'){
 			data_file >> a;
 			data_file >> b;

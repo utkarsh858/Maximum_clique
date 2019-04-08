@@ -172,7 +172,6 @@ void Graph::colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited)
     {
         if (!visited[*i])
         {
-
             colorUtil(ass_color,*i, visited);
         }
     }

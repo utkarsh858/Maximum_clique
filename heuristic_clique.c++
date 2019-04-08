@@ -9,9 +9,9 @@ Graph heuristic_clique(Graph& G, map<int,int> K){
 
 	for (int v : V)
 	{
-		if(K[v] > max){
+		if(K[v] > max){ // no recalculation of K since G not yet edited
 			
-			Graph S = G.neighbourhood(v);
+			Graph S = G.neighbourhood(v,K,0);
 			std::vector<int> s_vert = S.getVertices();
 			for(int u : s_vert)
 			{

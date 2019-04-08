@@ -5,10 +5,10 @@ Graph intersection(Graph G, Graph V){
 	sort(v.begin(),v.end());
 	vector<int> common;
 	int i=0;int j=0;
-	while(i<g.size() || j<v.size()){
-		if(i>=g.size() && j>=v.size()) {
-			break;
-		}
+	while(i<g.size() && j<v.size()){
+		// if(i>=g.size() && j>=v.size()) {
+		// 	break;
+		// }
 		if(v[j] == g[i]) {
 			common.push_back(v[j]);
 			j++;i++;

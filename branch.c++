@@ -10,7 +10,7 @@ void branch(Graph P, Graph C, Graph& G){
 		Graph C_new;
 		if(P_new.size() > 0){
 			int L = P_new.color();
-			if(c_new + L > H.size()) 
+			if(true || c_new + L > H.size()) 
 				{
 					// making C'
 					C_new = C;
@@ -68,9 +68,10 @@ void initial_branch(int u, Graph &G){
 			// break;
 		}
 	}
-	int L = P.color(K);  // what is this color??
+	// int L = P.color(K);  // what is this color??
 	
-	if(L <= H.size()) return;
+	// if(L <= H.size()) return;
 	Graph C;
 	branch(P,C,G);
 }
+// To remove core number error initiliase graph with G(27) instead of 
