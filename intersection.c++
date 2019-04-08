@@ -1,35 +1,16 @@
-Graph intersection(Graph G, Graph V){
-	std::vector<int> g = G.getVertices();
-	std::vector<int> v = V.getVertices();
-	sort(g.begin(),g.end());
-	sort(v.begin(),v.end());
-	vector<int> common;
-	int i=0;int j=0;
-	while(i<g.size() || j<v.size()){
-		if(i>=g.size() && j>=v.size()) {
-			break;
-		}
-		if(v[j] == g[i]) {
-			common.push_back(v[j]);
-			j++;i++;
-		}else
-		if(v[j] > g[i]) i++;
-		else j++;
-	}
-	Graph I;
-	I.V = common;
-	for(int i=0;i<common.size();i++){
-	
-		for (list<int>::iterator it = G.adj[i].begin(); it != G.adj[i].end(); ++it)
-		{
-			bool matched = false;
-			for (list<int>::iterator jt = V.adj[i].begin();!matched && jt != V.adj[i].end(); ++jt)
-			{
-				if(*it == *jt) matched = true;
-			}
-			if(matched) I.add(i,*it);
-		}
-	}
 
-	return I;
+Graph intersection(Graph C,Graph T){
+	Graph R(C.n);
+	for (int i = 1; i < C.n+1; ++i)
+	{
+		if(C.V[i] && T.V[i]) R.V[i] = true;
+	}
+	for (int i = 1; i < C.n+1; ++i)
+	{
+		for (int j = 1; j < C.n+1; ++j)
+		{
+			if(C.edges[i][j] && T.edges[i][j]) R.edges[i][j] = true;
+		}
+	}
+	return R;
 }

@@ -3,21 +3,17 @@ class Graph
 { 
 public: 
 
-	// vector<int> V;
     int n;
     int count = 0;
     bool* V;
     bool** edges;
-    // map<int,list<int> > adj;
     Graph(){
 
     }
     Graph(int N){
-        // V.resize(N);
         n=N; count = n;
         V = new bool[N+1];
         for(int i=0;i<N+1;i++) V[i] = true;
-        // for(int i=0;i<N;i++) V[i] = i+1;   
         edges = new bool*[N+1];
         for (int i = 0; i < N+1; ++i)
              {
@@ -34,11 +30,12 @@ public:
  	bool edge_exists(int u,int v);
 	map<int,int> degrees();
 	Graph& operator=(const Graph & p);
-   
-    bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k);
-    list<int> kcores(int k, vector<int> cur_rem_ver);
+    bool DFSUtil(int v, vector<bool> &visited, vector<int> &vDegree, int k);
+    // bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k);
+    // list<int> kcores(int k, vector<int> cur_rem_ver);
+    vector<bool> kcores(int k);
     map<int, int> core_numbers();
-    
+
     int color();
     void colorUtil(int m[],int v, bool visited[]);
     int color(map<int,int> & K);
@@ -47,6 +44,79 @@ public:
     void print();
 
 };
+
+bool Graph::DFSUtil(int v, vector<bool> &visited, vector<int> &vDegree, int k)
+{
+    visited[v] = true;
+    for(int i=0;i< n+1;i++){
+        if(edges[v][i]){
+            if(vDegree[v] < k)
+                vDegree[i]--;
+            if(!visited[i]){
+                if(DFSUtil(i,visited,vDegree,k)) vDegree[v]--;
+            }
+        }
+    }
+    return (vDegree[v]<k);
+}
+vector<bool> Graph::kcores(int k){
+    vector<bool> visited(n+1, false);
+    bool processed[n+1];
+    vector<int> vDegree(n+1);
+
+    for(int v=0;v<n+1;v++){
+        visited[v] = false;
+        processed[v] = false;
+    }
+    int mindeg = INT_MAX;
+    int startvertex;
+
+    for(int v=0;v<n+1;v++){
+        int count = 0;
+        for (int i = 0; i < n+1; ++i)
+        {
+            if(edges[v][i]) count++;
+        }
+        vDegree[v] = count;
+        if(vDegree[v] < mindeg){
+            mindeg = vDegree[v];
+            startvertex = v;
+        }
+
+    }
+    DFSUtil(startvertex, visited, vDegree, k);
+    // for(auto v : V){
+    for(int v=1;v<n+1;v++){
+        if(!visited[v]) DFSUtil(v,visited,vDegree, k);
+    }
+    std::vector<bool> rem(n,false);
+    // for(auto v : V){
+    for(int v=1;v<n+1;v++){
+        if(vDegree[v] >= k){
+            rem[v] = true;
+        }
+    }
+    return rem;
+}
+
+map<int,int> Graph::core_numbers(){
+    map<int,int> core;
+    for (int s=1;s<n+1;s++)
+    {
+        int k =2;
+        bool flag = true;
+        while(flag){
+            vector<bool> rem;
+            rem = kcores(k);
+            if(rem[s]){
+                core[s] = k-1;
+                flag = false;
+            }
+            k++;
+        }
+    }
+    return core;
+}
 
 void Graph::colorUtil(int m[],int v, bool visited[]){
     visited[v] = true;
@@ -114,7 +184,6 @@ void Graph::colorKUtil(int m[],int v, bool visited[]){
     for (int i = 1; i < n+1; ++i)
     {
         if(edges[v][i]){
-            // colorUtil(m,i,visited);
             sorted_vertices[p] = i; p++;
         }
     }
@@ -153,7 +222,7 @@ int Graph::color(map<int,int > & K){
 }
 
 
-void print(){
+void Graph::print(){
     cout << "Vertices\n";
     for (int i = 0; i < n+1; ++i)
     {
@@ -173,18 +242,18 @@ void print(){
     cout << "---------\n";
 }
 
-Graph& operator=(const Graph& p){
+Graph& Graph::operator=(const Graph& p){
     if(this!=&p){
         this->n = p.n;
-        V=new int[n+1];
+        V=new bool[n+1];
         for (int i = 0; i < n+1; ++i)
         {
             this->V[i] = p.V[i];
         }
-        this->edges = new int*[this->n+1];
+        this->edges = new bool*[this->n+1];
         for(int i=0;i<n+1;i++) 
             {
-                edges[i] = new int[this->n+1];
+                edges[i] = new bool[this->n+1];
                 for (int j = 0; j < n+1; ++j)
                 {
                     this->edges[i][j] = p.edges[i][j];
@@ -194,7 +263,7 @@ Graph& operator=(const Graph& p){
     return *this;
 }
 
-map<int,int> degrees(){
+map<int,int> Graph::degrees(){
     map<int,int> m;
     for(int i =0;i<n+1;i++) {
         if(V[i]){
@@ -206,7 +275,7 @@ map<int,int> degrees(){
     return m;
 }
 
-bool edge_exists(int u,int v){
+bool Graph::edge_exists(int u,int v){
     return edges[u][v];
 }
 void Graph::resize(int N){
@@ -251,7 +320,7 @@ vector<int> Graph::getVertices(){
     return r;
 }
 
-Graph neighbourhood(int v){
+Graph Graph::neighbourhood(int v){
     Graph r;
     r.n=this->n;
     V = new bool[n+1];

@@ -12,28 +12,21 @@ void branch(Graph P, Graph C, Graph& G){
 			int L = P_new.color();
 			if(c_new + L > H.size()) 
 				{
-					// making C'
-					C_new = C;
-					C_new.add(w);
-					std::vector<int> c_vert=C_new.getVertices();
-					for(int j=0; j < c_vert.size(); j++)		
-					{
-						if(G.edge_exists(c_vert[j],w)) C.add(w,c_vert[j]);
-					}		
+					C.add(w);
+					for(int i=1;i<G.n+1;i++){
+						if(G.edge_exists(i,w)) C.add(i,w);
+					}
 
-
-					branch(P_new, C_new,G);
+					branch(P_new, C,G);
 				}
 		}else if(c_new > H.size()){
-			C_new = C;
-			C_new.add(w);
-			std::vector<int> c_vert=C_new.getVertices();
-			for(int j=0; j < c_vert.size(); j++)		
-			{
-				if(G.edge_exists(c_vert[j],w)) C.add(w,c_vert[j]);
-			}		
 
-			H = C_new;
+					C.add(w);
+					for(int i=1;i<G.n+1;i++){
+						if(G.edge_exists(i,w)) C.add(i,w);
+					}
+
+			H = C;
 			vector<int> g_vert = G.getVertices();
 			K = G.core_numbers();
 			for(auto g : g_vert){

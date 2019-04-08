@@ -10,7 +10,7 @@
 using namespace std;
 
 #include "clique_comp.c++"
-#include "graph.c++"
+#include "graph_matrix.c++"
 #include "globals.c++"
 #include "intersection.c++"
 #include "heuristic_clique.c++"
