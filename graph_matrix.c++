@@ -34,16 +34,124 @@ public:
  	bool edge_exists(int u,int v);
 	map<int,int> degrees();
 	Graph& operator=(const Graph & p);
+   
     bool DFSUtil(int v, map<int, bool> &visited, map<int, int> &vDegree, int k);
     list<int> kcores(int k, vector<int> cur_rem_ver);
     map<int, int> core_numbers();
+    
     int color();
-    void colorUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
+    void colorUtil(int m[],int v, bool visited[]);
     int color(map<int,int> & K);
-    void colorKUtil(map<int,int>& ass_color,int v, map<int,bool> &visited);
+    void colorKUtil(int m[],int v, bool visited[]);
+   
     void print();
 
 };
+
+void Graph::colorUtil(int m[],int v, bool visited[]){
+    visited[v] = true;
+    for (int i = 0;; ++i)
+    {
+        bool found = false;
+        for (int j = 1; j < n+1 && !found; ++j)
+        {
+            if(edges[v][j]){ // for adjoint vertices
+                if(m[j] && m[j]==n){ // if assigned color
+                    found = true;
+                }
+            }
+        }
+        if(!found) {m[v] = i; break;}
+    }
+    for (int i = 1; i < n+1; ++i)
+    {
+        if(edges[v][i] && !visited[i]){
+            colorUtil(m,i,visited);
+        }
+    }
+
+}
+
+int Graph::color(){
+    bool visited[n+1];
+    int m[n+1];
+    for (int i = 0; i < n+1; ++i)
+    {
+        m[i] =0;
+    }
+    int start_vertex;
+    for (int i = 0; i < n+1; ++i)
+    {
+        if(V[i]) {start_vertex = i; break;}
+    }
+    colorUtil(m,start_vertex,visited);
+
+    int maxColor = INT_MIN;
+    for (int i = 0; i < n+1; ++i)
+    {
+        if(maxColor < m[i]) maxColor = m[i];
+    }
+    return maxColor;
+}
+
+void Graph::colorKUtil(int m[],int v, bool visited[]){
+    visited[v] = true;
+    for (int i = 0;; ++i)
+    {
+        bool found = false;
+        for (int j = 1; j < n+1 && !found; ++j)
+        {
+            if(edges[v][j]){ // for adjoint vertices
+                if(m[j] && m[j]==n){ // if assigned color
+                    found = true;
+                }
+            }
+        }
+        if(!found) {m[v] = i; break;}
+    }
+    vector<int> sorted_vertices(count);
+    int p=0;
+    for (int i = 1; i < n+1; ++i)
+    {
+        if(edges[v][i]){
+            // colorUtil(m,i,visited);
+            sorted_vertices[p] = i; p++;
+        }
+    }
+    sort(sorted_vertices.begin(),sorted_vertices.end(),decr);
+    for (auto g : sorted_vertices)
+    {
+        if(!visited[g]){
+            colorKUtil(m,g,visited);
+        }
+    }
+
+}
+
+
+int Graph::color(map<int,int > & K){
+    bool visited[n+1];
+    int m[n+1];
+    comp_dict = K;
+    for (int i = 0; i < n+1; ++i)
+    {
+        m[i] =0;
+    }
+    int start_vertex;
+    for (int i = 0; i < n+1; ++i)
+    {
+        if(V[i]) {start_vertex = i; break;}
+    }
+    colorKUtil(m,start_vertex,visited);
+
+    int maxColor = INT_MIN;
+    for (int i = 0; i < n+1; ++i)
+    {
+        if(maxColor < m[i]) maxColor = m[i];
+    }
+    return maxColor;
+}
+
 
 void print(){
     cout << "Vertices\n";
