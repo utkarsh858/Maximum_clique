@@ -16,8 +16,8 @@ Graph max_clique(Graph G){
 		if(K[v] < G.size()) G.remove(v);
 	}
 	// reduced vertices
-	comp_dict = G.degrees();
 	while(G.size() > 0){
+		comp_dict = G.degrees();
 		V = G.getVertices();
 		sort(V.begin(),V.end(),incr);
 		initial_branch(V[0],G);

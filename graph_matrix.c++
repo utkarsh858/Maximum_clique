@@ -11,9 +11,10 @@ public:
 
     }
     Graph(int N){
-        n=N; count = n;
+        n=N; count = 0;
         V = new bool[N+1];
-        for(int i=0;i<N+1;i++) V[i] = true;
+        for(int i=1;i<N+1;i++) V[i] = false;
+
         edges = new bool*[N+1];
         for (int i = 0; i < N+1; ++i)
              {
@@ -279,9 +280,9 @@ bool Graph::edge_exists(int u,int v){
     return edges[u][v];
 }
 void Graph::resize(int N){
-        n=N; count = n;
+        n=N; count = 0;
         V = new bool[N+1];
-        for(int i=0;i<N+1;i++) V[i] = true;
+        for(int i=0;i<N+1;i++) V[i] = false;
         edges = new bool*[N+1];
         for (int i = 0; i < N+1; ++i)
              {
@@ -292,6 +293,7 @@ void Graph::resize(int N){
 
 void Graph::add(int u,int v){
     edges[u][v] = true;
+    edges[v][u] = true;
 }
 
 void Graph::add(int u){
@@ -323,15 +325,16 @@ vector<int> Graph::getVertices(){
 Graph Graph::neighbourhood(int v){
     Graph r;
     r.n=this->n;
-    V = new bool[n+1];
-    V[v]= true; int count = 1;
-    for(int i=0;i<n+1;i++) V[i]=false;
+    r.V = new bool[n+1];
+    for(int i=0;i<n+1;i++) r.V[i]=false;
+
+    r.V[v]= true; r.count = 1;
     r.edges= new bool*[n+1];
     for(int i=0;i<n+1;i++) {
         r.edges[i] = new bool[n+1];
         for(int j=0;j<n+1;j++) r.edges[i][j]=false;
     }
-    for(int i=0;i<n+1;i++) if(edges[i][v]) {V[i]=true;count++;r.edges[i][v]=true;r.edges[v][i]=true;}
-        r.count = count;
+    for(int i=0;i<n+1;i++) if(edges[i][v]) {r.V[i]=true;r.count++;r.edges[i][v]=true;r.edges[v][i]=true;}
+    
     return r;
 }

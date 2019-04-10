@@ -5,5 +5,5 @@ bool decr(int a,int b){
 }
 
 bool incr(int a,int b){
-	return (comp_dict[a] > comp_dict[b]);
+	return (comp_dict[a] < comp_dict[b]);
 }

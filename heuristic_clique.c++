@@ -1,12 +1,15 @@
 
 Graph heuristic_clique(Graph& G, map<int,int> K){
 	int max = 0;
-	Graph H;
+	Graph H(G.n);
 	
 	std::vector<int> V = G.getVertices();
 	comp_dict = K;
 	sort(V.begin(),V.end(), decr);
-
+	for (int i = 0; i < V.size(); ++i)
+	{
+		cout << V[i]<<" "<<endl;
+	}
 	for (int v : V)
 	{
 		if(K[v] > max){
@@ -17,8 +20,9 @@ Graph heuristic_clique(Graph& G, map<int,int> K){
 			{
 				if(K[u] < max) S.remove(u);
 			}
-
-			Graph C;
+			cout << G.n<<"POP"<<endl;
+			Graph C(G.n);
+			// for(int i=1;i<=G.n;i++) C.add(i);
 			
 			sort(s_vert.begin(),s_vert.end(),decr);
 			for (int u : s_vert)

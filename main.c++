@@ -36,7 +36,11 @@ int main(int argc, char const *argv[])
 			data_file >> temp;
 			data_file >> a;
 			data_file >> b;
-			G.resize(a);
+			G.resize(a+1);
+			for (int i = 1; i <= a; ++i)
+			{
+				G.add(i);
+			}
 		} else if(x=='e'){
 			data_file >> a;
 			data_file >> b;
